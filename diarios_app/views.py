@@ -4,6 +4,6 @@ from django.shortcuts import render_to_response
 def inicio(request):
     return render_to_response('inicio.html')
 
-def noticias(request):
+def primeraDivision(request):
     noticias = Noticia.objects.all()
-    return render_to_response('noticias.html', {'noticias': noticias})
+    return render_to_response('primeraDivision.html', {'noticias': noticias, 'action':'/primeraDivision'})

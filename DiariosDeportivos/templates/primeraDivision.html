@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+<html>
+<link rel="stylesheet" href="/DiariosDeportivos/static/bootstrap.min.css" media="screen"><head>
+    <link rel="stylesheet" href="/DiariosDeportivos/static/css/bootstrap.min.css" media="screen"><head>
+
+</head>
+<body class = "body">
+
+ <div id="noticias">
+    {% block content %}
+
+        <div class="row">
+         {% for noticia in noticias %}
+             <div class="col-sm-6">
+                <div class="card card-inverse" style="background-color: white; border-color: black;">
+                    <div class="card-header">
+                        <h6 class="card-subtitle text-muted">{{ noticia.fecha }}</h6>
+                        <h6 class="card-subtitle text-muted">{{ noticia.procedente_de }}</h6>
+                    </div>
+                    <a href="{{ noticia.url_noticia }}"><img class="card-img img-thumbnail" src="{{ noticia.url_foto }}"/></a>
+
+                    <div class="card-img-overlay">
+                        <h4 class="card-title">{{ noticia.titulo }}</h4>
+                        <p class="card-text">{{ noticia.descripcion }}...</p>
+                    </div>
+                </div>
+              </div>
+        {% endfor %}
+        </div>
+    {% endblock %}
+
+ </div>
+
+
+</body>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/DiariosDeportivos/static/js/bootstrap.min.js"></script>
+</html>

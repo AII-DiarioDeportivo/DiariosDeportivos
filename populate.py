@@ -22,8 +22,9 @@ def read_test():
         foto = entrada.media_content[0]['url']
         fecha = entrada.published_parsed
         fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__()
+        revista = "MARCA"
 
-        noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech)
+        noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech, procedente_de=revista)
         noticia.save()
 
 

@@ -10,6 +10,7 @@ class Noticia(models.Model):
     url_foto = models.URLField()
     url_noticia = models.URLField()
     fecha = models.DateField()
+    procedente_de = models.CharField(max_length=25)
 
     def __unicode__(self):
         return self.titulo

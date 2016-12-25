@@ -17,26 +17,29 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/noticias">Noticias <span class="sr-only">(current)</span></a></li>
+
+
+          <li {% if action == "/primeraDivision" %} class="active" {% endif %}>
+            <a href="/primeraDivision">Primera División <span class="sr-only">(current)</span></a>
+          </li>
+          <li {% if action == "/ligaEndesa" %} class="active" {% endif %}>
+            <a href="/ligaEndesa">Liga Endesa <span class="sr-only">(current)</span></a>
+          </li>
+          <li {% if action == "/Fórmula 1" %} class="active" {% endif %}>
+            <a href="/formula1">Fórmula 1 <span class="sr-only">(current)</span></a>
+          </li>
+          <li {% if action == "/motoGP" %} class="active" {% endif %}>
+            <a href="/motoGP">Moto GP <span class="sr-only">(current)</span></a>
+          </li>
       </ul>
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 
-
-
- <div id="noticias">
-
-    <div class="list-group">
-         {% for noticia in noticias %}
-             <a href="{{ noticia.url_noticia }}" class="list-group-item"> {{ noticia.titulo }} </a>
-        {% endfor %}
+    <div class="container">
+        {% block content %}{% endblock %}
     </div>
-
-
-    </div>
-
 
 </body>
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
