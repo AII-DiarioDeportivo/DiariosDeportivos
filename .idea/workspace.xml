@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="26621082-9261-450a-9170-0660d4b25323" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DiariosDeportivos/templates/login.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DiariosDeportivos/templates/registration.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/diarios_app/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/DiariosDeportivos.iml" afterPath="$PROJECT_DIR$/.idea/DiariosDeportivos.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiariosDeportivos/settings.py" afterPath="$PROJECT_DIR$/DiariosDeportivos/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiariosDeportivos/templates/inicio.html" afterPath="$PROJECT_DIR$/DiariosDeportivos/templates/inicio.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiariosDeportivos/templates/layout.html" afterPath="$PROJECT_DIR$/DiariosDeportivos/templates/layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiariosDeportivos/urls.py" afterPath="$PROJECT_DIR$/DiariosDeportivos/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/diariosDeportivos.db" afterPath="$PROJECT_DIR$/diariosDeportivos.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/diarios_app/models.py" afterPath="$PROJECT_DIR$/diarios_app/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/diarios_app/views.py" afterPath="$PROJECT_DIR$/diarios_app/views.py" />
-    </list>
+    <list default="true" id="26621082-9261-450a-9170-0660d4b25323" name="Default" comment="" />
     <ignored path="DiariosDeportivos.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -644,7 +631,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16944024" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
