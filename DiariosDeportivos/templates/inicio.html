@@ -1,5 +1,12 @@
 {% extends 'layout.html' %}
 
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>Bienvenido {{ user.username }}</h2>
+    {% endif %}
+{% endblock %}
+
+<!--
 <html>
 <link rel="stylesheet" href="/DiariosDeportivos/static/bootstrap.min.css" media="screen"><head>
     <link rel="stylesheet" href="/DiariosDeportivos/static/css/bootstrap.min.css" media="screen"><head>
@@ -11,4 +18,4 @@
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="/DiariosDeportivos/static/js/bootstrap.min.js"></script>
-</html>
+</html>-->

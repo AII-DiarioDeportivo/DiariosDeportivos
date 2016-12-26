@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    {% block heading %}
+        <h2>Login</h2>
+    {% endblock %}
+
+    <form method="post" action="{% url login %}" accept-charset="utf-8">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+
+        {% csrf_token %}
+
+        <input type="hidden" name="next" value="{{ next }}"/><br/>
+        <input class="btn btn-default" type="submit" value="Login">
+    </form>
+
+{% endblock %}
