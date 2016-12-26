@@ -4,6 +4,8 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'DiariosDeportivos.settings'
 import feedparser
 from django.db.transaction import commit_on_success
 from diarios_app.models import Noticia
+from django.utils.html import strip_tags
+
 
 #Clase de pruebas
 @commit_on_success
@@ -18,6 +20,7 @@ def read_test():
         counter+=1
         tit = entrada.title
         desc = entrada.content[0]['value']
+        desc = strip_tags(desc)
         url_not = entrada.link
         foto = entrada.media_content[0]['url']
         fecha = entrada.published_parsed

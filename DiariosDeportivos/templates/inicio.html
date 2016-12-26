@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% block title %}Diarios deportivos{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
         <h2>Bienvenido {{ user.username }}</h2>
