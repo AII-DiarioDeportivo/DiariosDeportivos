@@ -9,6 +9,10 @@ from django.utils.html import strip_tags
 from django.db import models
 from dateutil import parser
 from django.utils import timezone
+from whoosh.index import create_in
+from whoosh.fields import Schema, TEXT, KEYWORD, ID, NUMERIC, DATETIME
+import sqlite3
+
 
 #EXTRACCIÓN DE DATOS DE MARCA - FUTBOL
 @commit_on_success
@@ -138,6 +142,38 @@ def read_primera_division_AS():
                 except:
                     print ""
 
+# Indexación de resultados
+
+dirindexnoticias = "IndexNoticias"
+
+def indexar_datos():
+
+    print("Indexando Noticias...")
+
+    # Creamos indice de Noticias
+    if not os.path.exists(dirindexnoticias):
+        os.mkdir(dirindexnoticias)
+
+    ix_noticias = create_in(dirindexnoticias, schema=get_schema_noticias())
+    writer_noticias = ix_noticias.writer()
+
+    conn = sqlite3.connect('diariosDeportivos.db')
+    cursor = conn.execute("""SELECT * FROM diarios_app_noticia""");
+    for row in cursor:
+        fecha = row[5]
+        fecha2 = fecha.__str__()
+        fecha3 = fecha2.split( )[0]
+        writer_noticias.add_document(id_noticia=unicode(row[0]), titulo=unicode(row[1]), descripcion=unicode(row[2]), url_foto=unicode(row[3]),
+                                     url_noticia=unicode(row[4]), fecha=unicode(fecha3), procedente_de=unicode(row[6]))
+    conn.close()
+    writer_noticias.commit()
+
+
+def get_schema_noticias():
+    return Schema(id_noticia=NUMERIC(stored=True), titulo=TEXT(stored=True), descripcion=TEXT(stored=True),
+                  url_foto=ID(stored=True), url_noticia=ID(stored=True), fecha=DATETIME(stored=True),
+                  procedente_de=KEYWORD(stored=True))
+
 
 #EXTRACCIÓN DE DATOS DE EL MUNDO - FUTBOL
 @commit_on_success
@@ -216,4 +252,6 @@ if __name__ == "__main__":
     read_primera_division_MARCA()
     read_primera_division_AS()
     read_primera_division_EL_MUNDO()
+    indexar_datos()
+
     #prueba()

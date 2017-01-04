@@ -3,6 +3,12 @@
 {% block title %}Diarios deportivos{% endblock %}
 
 {% block content %}
+    <form id="searchform" action="{% url search %}" method="get" accept-charset="utf-8">
+        <button class="searchbutton" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+        <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Busca la noticia">
+    </form>
     {% if user.is_authenticated %}
         <h2>Bienvenido {{ user.username }}</h2>
     {% endif %}

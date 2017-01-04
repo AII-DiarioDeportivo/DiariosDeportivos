@@ -11,6 +11,9 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from forms import RegistrationForm
 
+from whoosh.index import open_dir
+from whoosh import qparser
+
 def inicio(request):
     return render_to_response('inicio.html',context_instance=RequestContext(request))
 
@@ -82,3 +85,19 @@ def registration(request):
         form = RegistrationForm()
 
     return render_to_response('registration.html', {'form': form,}, context_instance=RequestContext(request))
+
+
+# Busqueda con Whoosh
+
+dirindexnoticias = "IndexNoticias"
+
+def busca_noticias(request):
+
+    noticia = request.GET.get('q', None)
+    ix = open_dir(dirindexnoticias)
+
+    with ix.searcher() as searcher:
+        query = qparser.MultifieldParser(['titulo', 'descripcion', 'fecha'], ix.schema)
+        q = query.parse(unicode(noticia))
+        noticias = searcher.search(q)
+        return render_to_response('primeraDivision.html', {'noticias': noticias,}, context_instance=RequestContext(request))
