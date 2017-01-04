@@ -34,7 +34,6 @@ def primeraDivision(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         noticias = paginator.page(paginator.num_pages)
-
     return render_to_response('primeraDivision.html', {'noticias': noticias, 'action':'/primeraDivision'},context_instance=RequestContext(request))
 
 @login_required
