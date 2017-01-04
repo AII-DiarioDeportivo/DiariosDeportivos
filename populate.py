@@ -4,7 +4,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'DiariosDeportivos.settings'
 import feedparser
 import datetime
 from django.db.transaction import commit_on_success
-from diarios_app.models import Noticia
+from diarios_app.models import Noticia, Etiquetas
 from django.utils.html import strip_tags
 from django.db import models
 from dateutil import parser
@@ -28,6 +28,8 @@ def read_primera_division_MARCA():
         lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
+        print " ------- "
+        revista = "MARCA"
         id = counter
         counter+=1
         tit = entrada.title
@@ -35,18 +37,30 @@ def read_primera_division_MARCA():
         desc = strip_tags(desc)
         url_not = entrada.link
         foto = entrada.media_content[0]['url']
+
         fecha = entrada.published_parsed
         fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]+1).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        revista = "MARCA"
-
         fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-
         lastDateStr = lastDate.__str__()[0:19]
         lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
 
         if fech2 > lastDate2:
+            print "AÑADIDA A BBDD"
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista)
             noticia.save()
+
+            for t in entrada.tags:
+                etiquetas = Etiquetas.objects.all()
+                if t['term'] in etiquetas:
+                    etiqueta = Etiquetas.objects.filter(nombre=t['term'])
+                    etiqueta.noticias.add(noticia)
+                else:
+                    id = len(Etiquetas.objects.all())
+                    name = t['term']
+                    etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                    etiqueta.save()
+                    etiqueta.noticias.add(noticia)
+
 
 def prueba():
     print  len(Noticia.objects.all()).__str__()

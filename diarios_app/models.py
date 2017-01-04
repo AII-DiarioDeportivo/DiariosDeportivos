@@ -25,7 +25,7 @@ class Puntuacion(models.Model):
         return self.id_noticia + " " + self.id_usuario
 
 class Etiquetas(models.Model):
-    id_etiqueta = models.IntegerField(unique=True)
+    id_etiqueta = models.IntegerField(unique=True, primary_key=True)
     nombre = models.CharField(max_length=50)
 
     noticias = models.ManyToManyField(Noticia)
