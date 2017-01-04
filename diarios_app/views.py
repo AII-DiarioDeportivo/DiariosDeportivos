@@ -1,10 +1,12 @@
-from diarios_app.models import Noticia,Puntuacion
+from diarios_app.models import Noticia, Puntuacion
 from django.contrib.auth.models import User
 import json
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,11 +17,24 @@ from whoosh.index import open_dir
 from whoosh import qparser
 
 def inicio(request):
-    return render_to_response('inicio.html',context_instance=RequestContext(request))
+    noticias = Noticia.objects.all().order_by('fecha').reverse()[:6]
+    return render_to_response('inicio.html',{'noticias': noticias},context_instance=RequestContext(request))
 
 @login_required
 def primeraDivision(request):
-    noticias = Noticia.objects.all().order_by("fecha")
+    noticias = Noticia.objects.all().order_by("-fecha")
+    paginator = Paginator(noticias, 12) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        noticias = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        noticias = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        noticias = paginator.page(paginator.num_pages)
+
     return render_to_response('primeraDivision.html', {'noticias': noticias, 'action':'/primeraDivision'},context_instance=RequestContext(request))
 
 @login_required

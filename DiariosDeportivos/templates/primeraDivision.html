@@ -38,6 +38,30 @@
     </div>
 </div>
 
+    {% if noticias.has_other_pages %}
+        <div class="text-center">
+        <ul class="pagination">
+            {% if users.has_previous %}
+                <li><a href="?page={{ noticias.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in noticias.paginator.page_range %}
+                {% if noticias.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if noticias.has_next %}
+                <li><a href="?page={{ noticias.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        </div>
+    {% endif %}
+
 <script type="text/javascript">
     $(document).ready(function () {
 
