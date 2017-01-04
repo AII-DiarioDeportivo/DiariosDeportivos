@@ -24,6 +24,9 @@ urlpatterns = patterns('',
     url(r'^rate/$', 'diarios_app.views.rate'),
     url(r'^check_rate/$', 'diarios_app.views.checkRate'),
 
+    url(r'^search/$', 'diarios_app.views.busca_noticias', name="search"),
+
+
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
