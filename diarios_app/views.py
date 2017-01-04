@@ -16,7 +16,7 @@ def inicio(request):
 
 @login_required
 def primeraDivision(request):
-    noticias = Noticia.objects.all()
+    noticias = Noticia.objects.all().order_by("fecha")
     return render_to_response('primeraDivision.html', {'noticias': noticias, 'action':'/primeraDivision'},context_instance=RequestContext(request))
 
 @login_required

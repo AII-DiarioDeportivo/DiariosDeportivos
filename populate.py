@@ -16,25 +16,37 @@ def read_primera_division_MARCA():
     print "Populando de Marca..."
     parseo = feedparser.parse('http://estaticos.marca.com/rss/futbol/primera-division.xml')
 
-    #Tenemos que encontrar el ultimo id registrado
+    # Tenemos que encontrar el ultimo id registrado
     if len(Noticia.objects.all()) == 0:
         counter = 1
         lastDate = datetime.datetime.today()
-        lastDate = lastDate.replace(year=lastDate.year-3)
+        lastDate = lastDate.replace(year=lastDate.year - 3)
     else:
-        counter = Noticia.objects.latest("id_noticia").id_noticia
-        counter+=1
-        lastDate = Noticia.objects.latest("fecha").fecha
-        lastDate = lastDate.replace(hour=lastDate.hour + 1)
+        if "MARCA" not in Noticia.objects.values_list('procedente_de', flat=True):
+            print
+            "NO HAY NOTICIAS DE MARCA."
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+
+        else:
+            print
+            "SI HAY NOTICIAS DE MARCA"
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            queryset = Noticia.objects.filter(procedente_de='MARCA')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        print " ------- "
         revista = "MARCA"
         id = counter
         counter+=1
         tit = entrada.title
         desc = entrada.content[0]['value']
         desc = strip_tags(desc)
+        desc = desc[0:150]
         url_not = entrada.link
         foto = entrada.media_content[0]['url']
 
@@ -50,23 +62,95 @@ def read_primera_division_MARCA():
             noticia.save()
 
             for t in entrada.tags:
-                etiquetas = Etiquetas.objects.all()
-                if t['term'] in etiquetas:
-                    etiqueta = Etiquetas.objects.filter(nombre=t['term'])
-                    etiqueta.noticias.add(noticia)
-                else:
-                    id = len(Etiquetas.objects.all())
-                    name = t['term']
-                    etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
-                    etiqueta.save()
-                    etiqueta.noticias.add(noticia)
+                try:
+                    etiquetas = Etiquetas.objects.all()
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
+
+
+@commit_on_success
+def read_primera_division_AS():
+    print "Populando de AS..."
+    parseo = feedparser.parse('http://futbol.as.com/rss/futbol/primera.xml')
+
+    #Tenemos que encontrar el ultimo id registrado
+    if len(Noticia.objects.all()) == 0:
+        counter = 1
+        lastDate = datetime.datetime.today()
+        lastDate = lastDate.replace(year=lastDate.year-3)
+    else:
+        if "AS" not in Noticia.objects.values_list('procedente_de', flat=True):
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+
+        else:
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter+=1
+            queryset = Noticia.objects.filter(procedente_de='AS')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
+
+    for entrada in parseo.entries:
+        revista = "AS"
+        id = counter
+        counter+=1
+        tit = entrada.title
+        desc = entrada.content[0]['value']
+        desc = strip_tags(desc)
+        desc = desc[0:150]
+        url_not = entrada.link
+        foto = entrada.links[1]['href']
+
+        fecha = entrada.published_parsed
+        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]+1).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+        lastDateStr = lastDate.__str__()[0:19]
+        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+
+
+        if fech2 > lastDate2:
+            noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista)
+            noticia.save()
+
+            for t in entrada.tags:
+                try:
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
 
 
 def prueba():
-    print  len(Noticia.objects.all()).__str__()
+
+    etiquetas = Etiquetas.objects.values_list('nombre', flat=True)
+
+    if "AS" not in Noticia.objects.values_list('procedente_de', flat=True):
+        print "YEP"
+    else:
+        print "np"
 
 
 
 if __name__ == "__main__":
     read_primera_division_MARCA()
+    read_primera_division_AS()
+
     #prueba()
