@@ -2,27 +2,139 @@
 
 {% block title %}Primera división{% endblock %}
 
+{% block content %}
+
 <div id="noticias">
-    {% block content %}
+    <div class="row">
+        {% for noticia in noticias %}
+            <div id="container" name="container" class="col-sm-6" >
+                <div class="card card-inverse" style="background-color: white; border-color: black;">
+                    <div class="card-header">
+                        <h6 class="card-subtitle text-muted">{{ noticia.fecha }}</h6>
+                        <h6 class="card-subtitle text-muted">{{ noticia.procedente_de }}</h6>
+                    </div>
+                    <a href="{{ noticia.url_noticia }}"><img class="card-img img-thumbnail" src="{{ noticia.url_foto }}"/></a>
 
-        <div class="row">
-            {% for noticia in noticias %}
-                <div class="col-sm-6">
-                    <div class="card card-inverse" style="background-color: white; border-color: black;">
-                        <div class="card-header">
-                            <h6 class="card-subtitle text-muted">{{ noticia.fecha }}</h6>
-                            <h6 class="card-subtitle text-muted">{{ noticia.procedente_de }}</h6>
-                        </div>
-                        <a href="{{ noticia.url_noticia }}"><img class="card-img img-thumbnail" src="{{ noticia.url_foto }}"/></a>
-
-                        <div class="card-img-overlay">
-                            <h4 class="card-title">{{ noticia.titulo }}</h4>
-                            <p class="card-text">{{ noticia.descripcion }}...</p>
-                        </div>
+                    <div class="card-img-overlay">
+                        <h4 class="card-title">{{ noticia.titulo }}</h4>
+                        <p class="card-text">{{ noticia.descripcion }}...</p>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-    {% endblock %}
-
+                {% if user.is_authenticated %}
+                    <div>
+                        <form id="{{ noticia.id_noticia }}" name = "rating">
+                          <input type="hidden"  name="noticia" value="{{ noticia.id_noticia }}">
+                          <input type="radio" name="rate" value="0">
+                          <input type="radio" name="rate" value="1">
+                          <input type="radio" name="rate" value="2">
+                          <input type="radio" name="rate" value="3">
+                          <input type="radio" name="rate" value="4">
+                          <input type="radio" name="rate" value="5">
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // CSRF code
+        function getCookie(name) {
+            var cookieValue = null;
+            var i = 0;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (i; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+        // POST PARA COMPROBAR PUNTUACIONES
+        var formsCollection = document.getElementsByName("rating");
+        for(var i=0;i<formsCollection.length;i++) {
+            var id_noticia = formsCollection[i].id
+            var radios = formsCollection[i].elements
+            data = {id_noticia: id_noticia, id_usuario: {{ user.id }}};
+
+            $.ajax({
+                type:"POST",
+                url:"/check_rate/",
+                dataType: "json",
+                data : data,
+                success: function(json){
+                    if (json[0]['check'] == true) {
+                            console.log(json[0]['value'])
+                            for(var i=0;i<radios.length;i++) {
+                                if (radios[i].value == json[0]['value']){
+                                    console.log('#'+json[0]['id_noticia']);
+                                    console.log("pepe");
+
+                                    $('input[value='+json[0]['value']+']', '#'+json[0]['id_noticia'])[0].checked = true;
+
+                                }
+                            }
+
+                    }else{
+                        console.log('Sin puntuar')
+                    }
+                }
+            });
+        }
+
+
+        // POST PARA PUNTUAR
+        $('input[type=radio][name=rate]').change(function () {
+            console.log("form submitted!")
+            var noti = $(this).parent("form").attr('id');
+            var data = {
+                    'value' : $(this).val(),
+                    'id_noticia' : noti,
+                    'id_usuario' : {{ user.id }}
+              };
+            $.ajax({
+                type:"POST",
+                url:"/rate/",
+                dataType: "json",
+                data : data,
+                success: function(json)
+                {
+                    console.log(json[0]['value']);
+                    console.log(json[0]['id_p']);
+                }
+            });
+        });
+
+    });
+
+
+
+</script>
+
+{% endblock %}
+
+
