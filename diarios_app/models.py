@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Noticia(models.Model):
-    id_noticia = models.IntegerField(unique=True)
+    id_noticia = models.IntegerField(unique=True,primary_key=True)
     titulo = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=250)
     url_foto = models.URLField()
