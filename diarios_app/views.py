@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from populate import read_futbol, read_moto, read_formula1, read_basket
 
 
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,9 @@ def inicio(request):
 
 @login_required
 def futbol(request):
+
+    read_futbol()
+
     noticias = Noticia.objects.filter(deporte="FUTBOL").order_by("-fecha")
     paginator = Paginator(noticias, 12) # Show 25 contacts per page
 
@@ -38,6 +42,9 @@ def futbol(request):
 
 @login_required
 def baloncesto(request):
+
+    read_basket()
+
     noticias = Noticia.objects.filter(deporte="BASKET").order_by("-fecha")
     paginator = Paginator(noticias, 12) # Show 25 contacts per page
 
@@ -55,6 +62,9 @@ def baloncesto(request):
 
 @login_required
 def formula1(request):
+
+    read_formula1()
+
     noticias = Noticia.objects.filter(deporte="F1").order_by("-fecha")
     paginator = Paginator(noticias, 12) # Show 25 contacts per page
 
@@ -71,6 +81,9 @@ def formula1(request):
 
 @login_required
 def motociclismo(request):
+
+    read_moto()
+
     noticias = Noticia.objects.filter(deporte="MOTOCICLISMO").order_by("-fecha")
     paginator = Paginator(noticias, 12) # Show 25 contacts per page
 

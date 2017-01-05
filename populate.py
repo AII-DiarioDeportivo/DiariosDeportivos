@@ -14,6 +14,9 @@ from whoosh.fields import Schema, TEXT, KEYWORD, ID, NUMERIC, DATETIME
 import sqlite3
 
 
+noticiasNuevas = False
+
+
 #EXTRACCIÓN DE DATOS DE MARCA - FUTBOL
 @commit_on_success
 def read_primera_division_MARCA():
@@ -64,6 +67,7 @@ def read_primera_division_MARCA():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -129,6 +133,7 @@ def read_liga_endesa_MARCA():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo=tit, descripcion=desc, url_foto=foto,url_noticia=url_not, fecha=fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -196,6 +201,7 @@ def read_primera_division_AS():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -236,6 +242,7 @@ def indexar_datos():
                                      url_noticia=unicode(row[4]), fecha=unicode(fecha3), procedente_de=unicode(row[6]))
     conn.close()
     writer_noticias.commit()
+    noticiasNuevas = False
 
 
 def get_schema_noticias():
@@ -295,6 +302,7 @@ def read_primera_division_EL_MUNDO():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -362,6 +370,7 @@ def read_liga_endesa_AS():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -428,6 +437,7 @@ def read_liga_endesa_EL_MUNDO():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -494,6 +504,7 @@ def read_formula_1_MARCA():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo=tit, descripcion=desc, url_foto=foto,url_noticia=url_not, fecha=fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -568,6 +579,7 @@ def read_formula_1_AS():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -634,6 +646,7 @@ def read_motociclismo_AS():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -698,6 +711,7 @@ def read_motociclismo_MARCA():
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
+            noticiasNuevas = True
 
             for t in entrada.tags:
                 try:
@@ -713,14 +727,34 @@ def read_motociclismo_MARCA():
                         etiqueta.noticias.add(noticia)
                 except:
                     print ""
-def prueba():
-
-    news = Noticia.objects.all().order_by("-fecha")
-
-    for n in news:
-        print n.fecha
 
 
+
+def read_futbol():
+    read_primera_division_AS()
+    read_primera_division_MARCA()
+    read_primera_division_EL_MUNDO()
+    if noticiasNuevas == True:
+        indexar_datos()
+
+def read_basket():
+    read_liga_endesa_AS()
+    read_liga_endesa_EL_MUNDO()
+    read_liga_endesa_MARCA()
+    if noticiasNuevas == True:
+        indexar_datos()
+
+def read_formula1():
+    read_formula_1_MARCA()
+    read_formula_1_AS()
+    if noticiasNuevas == True:
+        indexar_datos()
+
+def read_moto():
+    read_motociclismo_MARCA()
+    read_motociclismo_AS()
+    if noticiasNuevas == True:
+        indexar_datos()
 
 if __name__ == "__main__":
     read_primera_division_MARCA()
@@ -734,5 +768,3 @@ if __name__ == "__main__":
     read_primera_division_EL_MUNDO()
     read_liga_endesa_EL_MUNDO()
     indexar_datos()
-
-    #prueba()
