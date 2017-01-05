@@ -23,19 +23,26 @@
                 {% if user.is_authenticated %}
                     <div>
                         <form id="{{ noticia.id_noticia }}" name = "rating">
-                          <input type="hidden"  name="noticia" value="{{ noticia.id_noticia }}">
-                          <input type="radio" name="rate" value="0">
-                          <input type="radio" name="rate" value="1">
-                          <input type="radio" name="rate" value="2">
-                          <input type="radio" name="rate" value="3">
-                          <input type="radio" name="rate" value="4">
-                          <input type="radio" name="rate" value="5">
+                            <div class="stars">
+                              <input type="radio" name="star" class="star-1" value="1" id="star-1{{ noticia.id_noticia }}"/>
+                              <label class="star-1" for="star-1{{ noticia.id_noticia }}">1</label>
+                              <input type="radio" name="star" class="star-2" value="2" id="star-2{{ noticia.id_noticia }}"/>
+                              <label class="star-2" for="star-2{{ noticia.id_noticia }}">2</label>
+                              <input type="radio" name="star" class="star-3" value="3" id="star-3{{ noticia.id_noticia }}"/>
+                              <label class="star-3" for="star-3{{ noticia.id_noticia }}">3</label>
+                              <input type="radio" name="star" class="star-4" value="4" id="star-4{{ noticia.id_noticia }}"/>
+                              <label class="star-4" for="star-4{{ noticia.id_noticia }}">4</label>
+                              <input type="radio" name="star" class="star-5" value="5" id="star-5{{ noticia.id_noticia }}"/>
+                              <label class="star-5" for="star-5{{ noticia.id_noticia }}">5</label>
+                              <span></span>
+                            </div>
                         </form>
                     </div>
                 {% endif %}
             </div>
         {% endfor %}
     </div>
+
 </div>
 
     {% if noticias.has_other_pages %}
@@ -116,8 +123,6 @@
                             for(var i=0;i<radios.length;i++) {
                                 if (radios[i].value == json[0]['value']){
                                     console.log('#'+json[0]['id_noticia']);
-                                    console.log("pepe");
-
                                     $('input[value='+json[0]['value']+']', '#'+json[0]['id_noticia'])[0].checked = true;
 
                                 }
@@ -132,9 +137,9 @@
 
 
         // POST PARA PUNTUAR
-        $('input[type=radio][name=rate]').change(function () {
+        $('input[type=radio][name=star]').change(function () {
             console.log("form submitted!")
-            var noti = $(this).parent("form").attr('id');
+            var noti = $(this).parent("div").parent("form").attr('id');
             var data = {
                     'value' : $(this).val(),
                     'id_noticia' : noti,
@@ -148,7 +153,6 @@
                 success: function(json)
                 {
                     console.log(json[0]['value']);
-                    console.log(json[0]['id_p']);
                 }
             });
         });
