@@ -8,3 +8,4 @@ Whoosh
 beautifulsoup4
 python-dateutil
 timestring
+feedparser
