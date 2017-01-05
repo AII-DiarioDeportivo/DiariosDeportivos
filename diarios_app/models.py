@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Noticia(models.Model):
+
     id_noticia = models.IntegerField(unique=True, primary_key=True)
     titulo = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=250)
@@ -12,22 +13,24 @@ class Noticia(models.Model):
     url_noticia = models.URLField()
     fecha = models.DateTimeField()
     procedente_de = models.CharField(max_length=25)
+    deporte = models.CharField(max_length=30)
 
     def __unicode__(self):
         return self.titulo
 
 class Puntuacion(models.Model):
+
     id_noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     id_usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.PositiveSmallIntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])
+    value = models.PositiveSmallIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
 
     def __unicode__(self):
         return self.id_noticia + " " + self.id_usuario
 
 class Etiquetas(models.Model):
+
     id_etiqueta = models.IntegerField(unique=True, primary_key=True)
     nombre = models.CharField(max_length=50)
-
     noticias = models.ManyToManyField(Noticia)
 
     def __unicode__(self):
