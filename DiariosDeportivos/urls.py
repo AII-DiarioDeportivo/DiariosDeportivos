@@ -14,7 +14,8 @@ urlpatterns = patterns('',
     url(r'^$', 'diarios_app.views.inicio', name='home'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^primeraDivision/$', 'diarios_app.views.primeraDivision'),
+    url(r'^futbol/$', 'diarios_app.views.futbol'),
+    url(r'^baloncesto/$', 'diarios_app.views.baloncesto'),
 
     url(r'^registration$', 'diarios_app.views.registration', name='registration'),
 
