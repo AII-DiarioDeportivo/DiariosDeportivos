@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^check_rate/$', 'diarios_app.views.checkRate'),
 
     url(r'^search/$', 'diarios_app.views.busca_noticias', name="search"),
+    url(r'^search2/$', 'diarios_app.views.etiquetas_noticias', name="search2"),
 
 
     # Uncomment the next line to enable the admin:

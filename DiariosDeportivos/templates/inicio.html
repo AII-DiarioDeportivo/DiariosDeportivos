@@ -15,6 +15,15 @@
     </form>
 
     <br><br>
+     {% for etiqueta in etiquetas %}
+         <form id="searchform2" action="{% url search2 %}" method="get" accept-charset="utf-8">
+        <button class="searchbutton " id="searchbox2" name="q" type="number" value="{{ etiqueta.id_etiqueta }}"type="submit">
+            {{ etiqueta.nombre }}
+        </button>
+    </form>
+    {% endfor %}
+
+    <br><br>
 
     <div id="noticias">
         <div class="row">

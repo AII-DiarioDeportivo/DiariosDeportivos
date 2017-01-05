@@ -1,4 +1,4 @@
-from diarios_app.models import Noticia, Puntuacion
+from diarios_app.models import Noticia, Puntuacion, Etiquetas
 from django.contrib.auth.models import User
 import json
 from django.shortcuts import render_to_response
@@ -16,10 +16,15 @@ from forms import RegistrationForm
 
 from whoosh.index import open_dir
 from whoosh import qparser
+from django.db.models import Count
 
 def inicio(request):
     noticias = Noticia.objects.all().order_by('fecha').reverse()[:6]
-    return render_to_response('inicio.html',{'noticias': noticias},context_instance=RequestContext(request))
+    etiquetas = Etiquetas.objects.annotate(c=Count('noticias')).order_by('-c')[:5]
+
+    etiquetas = sorted(set(etiquetas))
+
+    return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas},context_instance=RequestContext(request))
 
 @login_required
 def futbol(request):
@@ -180,3 +185,13 @@ def busca_noticias(request):
         q = query.parse(unicode(noticia))
         noticias = searcher.search(q)
         return render_to_response('inicio.html', {'noticias': noticias,}, context_instance=RequestContext(request))
+
+def etiquetas_noticias(request):
+
+    id_e = request.GET.get('q', None)
+
+    etiqueta = Etiquetas.objects.filter(id_etiqueta=id_e)
+    for e in etiqueta:
+        etiqueta = e
+
+    return render_to_response('inicio.html', {'noticias': etiqueta.noticias.all(),}, context_instance=RequestContext(request))
