@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^futbol/$', 'diarios_app.views.futbol'),
     url(r'^baloncesto/$', 'diarios_app.views.baloncesto'),
+    url(r'^formula1/$', 'diarios_app.views.formula1'),
+    url(r'^motociclismo/$', 'diarios_app.views.motociclismo'),
 
     url(r'^registration$', 'diarios_app.views.registration', name='registration'),
 

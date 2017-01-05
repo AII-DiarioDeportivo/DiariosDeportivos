@@ -54,6 +54,41 @@ def baloncesto(request):
 
 
 @login_required
+def formula1(request):
+    noticias = Noticia.objects.filter(deporte="F1").order_by("-fecha")
+    paginator = Paginator(noticias, 12) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        noticias = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        noticias = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        noticias = paginator.page(paginator.num_pages)
+    return render_to_response('noticias.html', {'noticias': noticias, 'action':'/formula1'},context_instance=RequestContext(request))
+
+@login_required
+def motociclismo(request):
+    noticias = Noticia.objects.filter(deporte="MOTOCICLISMO").order_by("-fecha")
+    paginator = Paginator(noticias, 12) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        noticias = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        noticias = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        noticias = paginator.page(paginator.num_pages)
+    return render_to_response('noticias.html', {'noticias': noticias, 'action':'/motociclismo'},context_instance=RequestContext(request))
+
+
+
+
+@login_required
 def rate(request):
     if request.is_ajax():
         id_usuario = int(request.POST["id_usuario"])

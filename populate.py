@@ -40,22 +40,26 @@ def read_primera_division_MARCA():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        revista = "MARCA-FUTBOL"
-        _deporte = "FUTBOL"
-        id = counter
-        counter+=1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.media_content[0]['url']
+        try:
+            revista = "MARCA-FUTBOL"
+            _deporte = "FUTBOL"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]+1).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]+1).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
 
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
@@ -75,6 +79,7 @@ def read_primera_division_MARCA():
                         etiqueta.noticias.add(noticia)
                 except:
                     print ""
+
 
 # EXTRACCIÓN DE DATOS DE MARCA - BASKET
 @commit_on_success
@@ -101,23 +106,26 @@ def read_liga_endesa_MARCA():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        revista = "MARCA-BASKET"
-        _deporte = "BASKET"
-        id = counter
-        counter += 1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.media_content[0]['url']
+        try:
+            revista = "MARCA-BASKET"
+            _deporte = "BASKET"
+            id = counter
+            counter += 1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
-
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo=tit, descripcion=desc, url_foto=foto,url_noticia=url_not, fecha=fech2, procedente_de=revista, deporte=_deporte)
             noticia.save()
@@ -164,23 +172,26 @@ def read_primera_division_AS():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        _deporte = "FUTBOL"
-        revista = "AS-FUTBOL"
-        id = counter
-        counter+=1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.links[1]['href']
+        try:
+            _deporte = "FUTBOL"
+            revista = "AS-FUTBOL"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.links[1]['href']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
-
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
 
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
@@ -199,11 +210,6 @@ def read_primera_division_AS():
                         etiqueta.noticias.add(noticia)
                 except:
                     print ""
-
-
-
-
-
 
 # Indexación de resultados
 
@@ -264,22 +270,26 @@ def read_primera_division_EL_MUNDO():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        _deporte = "FUTBOL"
-        revista = "EL MUNDO-FUTBOL"
-        id = counter
-        counter+=1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.media_content[0]['url']
+        try:
+            _deporte = "FUTBOL"
+            revista = "EL MUNDO-FUTBOL"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
 
 
         if fech2 > lastDate2:
@@ -328,23 +338,26 @@ def read_liga_endesa_AS():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        _deporte = "BASKET"
-        revista = "AS-BASKET"
-        id = counter
-        counter+=1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.links[1]['href']
+        try:
+            _deporte = "BASKET"
+            revista = "AS-BASKET"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.links[1]['href']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
-
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
 
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
@@ -391,23 +404,26 @@ def read_liga_endesa_EL_MUNDO():
             lastDate = lastDate.replace(hour=lastDate.hour + 1)
 
     for entrada in parseo.entries:
-        _deporte = "BASKET"
-        revista = "EL MUNDO-BASKET"
-        id = counter
-        counter+=1
-        tit = entrada.title
-        desc = entrada.content[0]['value']
-        desc = strip_tags(desc)
-        desc = desc[0:150]
-        url_not = entrada.link
-        foto = entrada.media_content[0]['url']
+        try:
+            _deporte = "BASKET"
+            revista = "EL MUNDO-BASKET"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
 
-        fecha = entrada.published_parsed
-        fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
-        fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
-        lastDateStr = lastDate.__str__()[0:19]
-        lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
-
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
 
         if fech2 > lastDate2:
             noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
@@ -428,6 +444,275 @@ def read_liga_endesa_EL_MUNDO():
                     print ""
 
 
+# EXTRACCIÓN DE DATOS DE MARCA - FORMULA 1
+@commit_on_success
+def read_formula_1_MARCA():
+    print "Populando F1 de Marca..."
+    parseo = feedparser.parse('http://estaticos.marca.com/rss/motor/formula1.xml')
+
+    # Tenemos que encontrar el ultimo id registrado
+    if len(Noticia.objects.all()) == 0:
+        counter = 1
+        lastDate = datetime.datetime.today()
+        lastDate = lastDate.replace(year=lastDate.year - 3)
+    else:
+        if "MARCA-F1" not in Noticia.objects.values_list('procedente_de', flat=True):
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+        else:
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            queryset = Noticia.objects.filter(procedente_de='MARCA-F1')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
+
+    for entrada in parseo.entries:
+        try:
+            revista = "MARCA-F1"
+            _deporte = "F1"
+            id = counter
+            counter += 1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
+
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
+
+
+        if fech2 > lastDate2:
+            noticia = Noticia(id_noticia=id, titulo=tit, descripcion=desc, url_foto=foto,url_noticia=url_not, fecha=fech2, procedente_de=revista, deporte=_deporte)
+            noticia.save()
+
+            for t in entrada.tags:
+                try:
+                    etiquetas = Etiquetas.objects.all()
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
+
+#EXTRACCIÓN DE DATOS DE AS - FORMULA 1
+@commit_on_success
+def read_formula_1_AS():
+    print "Populando F1 de AS..."
+    parseo = feedparser.parse('http://motor.as.com/rss/motor/formula_1.xml')
+
+    #Tenemos que encontrar el ultimo id registrado
+    if len(Noticia.objects.all()) == 0:
+        counter = 1
+        lastDate = datetime.datetime.today()
+        lastDate = lastDate.replace(year=lastDate.year-3)
+    else:
+        if "AS-F1" not in Noticia.objects.values_list('procedente_de', flat=True):
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+
+        else:
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter+=1
+            queryset = Noticia.objects.filter(procedente_de='AS-F1')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
+
+    for entrada in parseo.entries:
+        try:
+            _deporte = "F1"
+            revista = "AS-F1"
+            id = counter
+            counter+=1
+            tit = entrada.title
+
+            try:
+                desc = entrada.content[0]['value']
+                desc = strip_tags(desc)
+                desc = desc[0:150]
+            except:
+                desc = entrada.summary
+                desc = strip_tags(desc)
+                desc = desc[0:150]
+
+            url_not = entrada.link
+
+
+            foto = entrada.links[1]['href']
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
+
+        if fech2 > lastDate2:
+            noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
+            noticia.save()
+
+            for t in entrada.tags:
+                try:
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
+
+
+#EXTRACCIÓN DE DATOS DE AS - MOTOCICLISMO
+@commit_on_success
+def read_motociclismo_AS():
+    print "Populando MOTOCICLISMO de AS..."
+    parseo = feedparser.parse('http://motor.as.com/rss/motor/motociclismo.xml')
+
+    #Tenemos que encontrar el ultimo id registrado
+    if len(Noticia.objects.all()) == 0:
+        counter = 1
+        lastDate = datetime.datetime.today()
+        lastDate = lastDate.replace(year=lastDate.year-3)
+    else:
+        if "AS-MOTOCICLISMO" not in Noticia.objects.values_list('procedente_de', flat=True):
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+
+        else:
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter+=1
+            queryset = Noticia.objects.filter(procedente_de='AS-MOTOCICLISMO')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
+
+    for entrada in parseo.entries:
+        try:
+            _deporte = "MOTOCICLISMO"
+            revista = "AS-MOTOCICLISMO"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.links[1]['href']
+
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
+
+        if fech2 > lastDate2:
+            noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
+            noticia.save()
+
+            for t in entrada.tags:
+                try:
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
+
+#EXTRACCIÓN DE DATOS DE MARCA - MOTOCICLISMO
+@commit_on_success
+def read_motociclismo_MARCA():
+    print "Populando MOTOCICLISMO de Marca..."
+    parseo = feedparser.parse('http://estaticos.marca.com/rss/motor/motogp.xml')
+
+    # Tenemos que encontrar el ultimo id registrado
+    if len(Noticia.objects.all()) == 0:
+        counter = 1
+        lastDate = datetime.datetime.today()
+        lastDate = lastDate.replace(year=lastDate.year - 3)
+    else:
+        if "MARCA-MOTOCICLISMO" not in Noticia.objects.values_list('procedente_de', flat=True):
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            lastDate = datetime.datetime.today()
+            lastDate = lastDate.replace(year=lastDate.year - 3)
+
+        else:
+            counter = Noticia.objects.latest("id_noticia").id_noticia
+            counter += 1
+            queryset = Noticia.objects.filter(procedente_de='MARCA-MOTOCICLISMO')
+            lastDate = queryset.latest("fecha").fecha
+            lastDate = lastDate.replace(hour=lastDate.hour + 1)
+
+    for entrada in parseo.entries:
+        try:
+            revista = "MARCA-MOTOCICLISMO"
+            _deporte = "MOTOCICLISMO"
+            id = counter
+            counter+=1
+            tit = entrada.title
+            desc = entrada.content[0]['value']
+            desc = strip_tags(desc)
+            desc = desc[0:150]
+            url_not = entrada.link
+            foto = entrada.media_content[0]['url']
+
+            fecha = entrada.published_parsed
+            fech = fecha[0].__str__() + "-" + fecha[1].__str__() + "-" + fecha[2].__str__() + "-" + (fecha[3]).__str__() + ":" + fecha[4].__str__() + ":" + fecha[5].__str__()
+            fech2 = datetime.datetime.strptime(fech, "%Y-%m-%d-%H:%M:%S")
+            lastDateStr = lastDate.__str__()[0:19]
+            lastDate2 = datetime.datetime.strptime(lastDateStr.__str__(), "%Y-%m-%d %H:%M:%S")
+        except:
+            counter-=1
+            continue
+        if fech2 > lastDate2:
+            noticia = Noticia(id_noticia=id, titulo = tit, descripcion = desc, url_foto = foto, url_noticia = url_not, fecha = fech2, procedente_de=revista, deporte=_deporte)
+            noticia.save()
+
+            for t in entrada.tags:
+                try:
+                    etiquetas = Etiquetas.objects.all()
+                    if t['term'] in Etiquetas.objects.values_list('nombre', flat=True):
+                        etiqueta = Etiquetas.objects.get(nombre=t['term'])
+                        etiqueta.noticias.add(noticia)
+                    else:
+                        id = len(Etiquetas.objects.all())
+                        name = t['term']
+                        etiqueta = Etiquetas(id_etiqueta=id, nombre=name)
+                        etiqueta.save()
+                        etiqueta.noticias.add(noticia)
+                except:
+                    print ""
 def prueba():
 
     news = Noticia.objects.all().order_by("-fecha")
@@ -440,8 +725,12 @@ def prueba():
 if __name__ == "__main__":
     read_primera_division_MARCA()
     read_liga_endesa_MARCA()
+    read_formula_1_MARCA()
     read_primera_division_AS()
     read_liga_endesa_AS()
+    read_formula_1_AS()
+    read_motociclismo_AS()
+    read_motociclismo_MARCA()
     read_primera_division_EL_MUNDO()
     read_liga_endesa_EL_MUNDO()
     indexar_datos()
