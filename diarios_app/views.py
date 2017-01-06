@@ -8,6 +8,7 @@ from django.template.context import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from populate import read_futbol, read_moto, read_formula1, read_basket
 
+from diarios_app.services import  getRecommendations
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,7 +25,17 @@ def inicio(request):
 
     etiquetas = sorted(set(etiquetas))
 
-    return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas},context_instance=RequestContext(request))
+    noticias_recomendadas = None
+
+    if request.user.is_authenticated() and len(request.user.puntuacion_set.all())!=0:
+        prefs = create_prefs()
+        print prefs
+        tags = getRecommendations(prefs, request.user.pk)[:5]
+        noticias_recomendadas = []
+        for i in range(0,5):
+            tag = Etiquetas.objects.get(id_etiqueta=tags[i][1])
+            noticias_recomendadas.append(tag.noticias.all().order_by('fecha')[0])
+    return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas, 'noticias_recomendadas':noticias_recomendadas},context_instance=RequestContext(request))
 
 @login_required
 def futbol(request):
@@ -115,7 +126,6 @@ def rate(request):
 
         no = Noticia.objects.get(id_noticia=id_noticia)
         us = User.objects.get(id=id_usuario)
-        print request.POST["id_noticia"]
         try:
             ob = Puntuacion.objects.get(id_noticia=no.id_noticia ,id_usuario__username=us.username)
         except ObjectDoesNotExist:
@@ -195,3 +205,21 @@ def etiquetas_noticias(request):
         etiqueta = e
 
     return render_to_response('inicio.html', {'noticias': etiqueta.noticias.all(),}, context_instance=RequestContext(request))
+
+
+
+
+
+def create_prefs():
+    puntuaciones = Puntuacion.objects.all()
+    critics = {}
+    for puntuacion in puntuaciones:
+        for tag in puntuacion.id_noticia.etiquetas_set.all():
+            user = puntuacion.id_usuario.pk
+            etiqueta = tag.id_etiqueta.__str__()
+            valor = puntuacion.value
+            if user not in critics:
+                critics[user] = {}
+            critics[user][etiqueta] = valor
+
+    return critics
