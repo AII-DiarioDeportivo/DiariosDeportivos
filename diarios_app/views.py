@@ -29,13 +29,14 @@ def inicio(request):
 
     if request.user.is_authenticated() and len(request.user.puntuacion_set.all())!=0:
         prefs = create_prefs()
-        print prefs
         tags = getRecommendations(prefs, request.user.pk)[:5]
         noticias_recomendadas = []
-        for i in range(0,5):
+        for i in range(0, tags.__len__()):
             tag = Etiquetas.objects.get(id_etiqueta=tags[i][1])
             noticias_recomendadas.append(tag.noticias.all().order_by('fecha')[0])
-    return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas, 'noticias_recomendadas':noticias_recomendadas},context_instance=RequestContext(request))
+
+    nr2 = list(set(noticias_recomendadas))
+    return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas, 'noticias_recomendadas':nr2},context_instance=RequestContext(request))
 
 @login_required
 def futbol(request):
