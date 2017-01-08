@@ -21,11 +21,12 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             </button>
-            <a class="navbar-brand" href="/">Diarios Deportivos</a>
+            <a class="navbar-brand" href="/"><strong>Diarios Deportivos</strong></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
             <ul class="nav navbar-nav">
 
                 <li {% if action == "/futbol" %} class="active" {% endif %}>
@@ -43,6 +44,17 @@
 
             </ul>
 
+            <ul class="nav navbar-nav navbar-form navbar-left">
+                <li class="active">
+                    <form id="searchform" class="search-form" action="{% url search %}" method="get" accept-charset="utf-8">
+                        <div class="form-group has-feedback">
+                            <input type="text" class="form-control" name="q" id="search">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        
             <ul class="nav navbar-nav navbar-form navbar-right">
                 {% if not user.is_authenticated %}
                     <li class="active">

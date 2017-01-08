@@ -37,14 +37,6 @@
         {% endif %}
     {% endif %}
 
-    <br>
-    <form id="searchform" action="{% url search %}" method="get" accept-charset="utf-8">
-        <button class="searchbutton glyphicon glyphicon-search" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
-        <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Busca la noticia">
-    </form>
-
     <br><br>
      {% for etiqueta in etiquetas %}
          <form id="searchform2" action="{% url search2 %}" method="get" accept-charset="utf-8">
