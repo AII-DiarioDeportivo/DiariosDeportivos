@@ -4,26 +4,37 @@
 
 {% block content %}
     {% block heading %}
-        <h2>Login</h2>
+        <h2>Inicia sesión</h2>
     {% endblock %}
-
-    <form method="post" action="{% url login %}" accept-charset="utf-8">
+    <br>
+    <form method="post" class="form-horizontal" action="{% url login %}" accept-charset="utf-8">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
+
+        {% for field in form %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="col-sm-10">
+                    {% if field.label == 'Contraseña' %}
+                    <input type="password" class="form-control input-lg col-md-6"
+                           name="{{ field.name }}"
+                           id="id_{{ field.name }}" >
+                    {% else%}
+                    <input type="text" class="form-control input-lg col-md-6"
+                           name="{{ field.name }}"
+                           id="id_{{ field.name }}" >
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
 
         {% csrf_token %}
 
         <input type="hidden" name="next" value="{{ next }}"/><br/>
-        <input class="btn btn-default" type="submit" value="Login">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Inicia sesión</button>
+            </div>
+        </div>
     </form>
 
 {% endblock %}
