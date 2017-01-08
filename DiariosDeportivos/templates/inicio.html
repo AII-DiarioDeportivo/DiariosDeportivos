@@ -5,8 +5,11 @@
 {% block content %}
 
     {% if user.is_authenticated %}
+        <h3>Bienvenido <strong>{{ user.username }}</strong>!</h3>
+        <br>
         {% if noticias_recomendadas != None %}
-
+            <h4 class="text-center">Noticias recomendadas</h4>
+            <br>
             <div class= "container_special">
                 <div id="carousel-generic" class="carousel slide" data-ride="carousel" data-interval="0" data-slide-to="{{forloop.counter0}}">
                     <div class="carousel-inner" role="listbox">
@@ -34,9 +37,6 @@
         {% endif %}
     {% endif %}
 
-    {% if user.is_authenticated %}
-        <h2>Bienvenido {{ user.username }}</h2>
-    {% endif %}
     <br>
     <form id="searchform" action="{% url search %}" method="get" accept-charset="utf-8">
         <button class="searchbutton glyphicon glyphicon-search" type="submit">
