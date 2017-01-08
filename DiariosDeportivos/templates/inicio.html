@@ -65,22 +65,123 @@
                         </div>
                     </div>
                     {% if user.is_authenticated %}
-                        <div>
-                            <form id="{{ noticia.id_noticia }}" name = "rating">
-                                <input type="hidden"  name="noticia" value="{{ noticia.id_noticia }}">
-                                <input type="radio" name="rate" value="0">
-                                <input type="radio" name="rate" value="1">
-                                <input type="radio" name="rate" value="2">
-                                <input type="radio" name="rate" value="3">
-                                <input type="radio" name="rate" value="4">
-                                <input type="radio" name="rate" value="5">
-                            </form>
-                        </div>
-                    {% endif %}
+                    <div>
+                        <form id="{{ noticia.id_noticia }}" name = "rating">
+                            <div class="stars">
+                              <input type="radio" name="star" class="star-1" value="1" id="star-1{{ noticia.id_noticia }}"/>
+                              <label class="star-1" for="star-1{{ noticia.id_noticia }}">1</label>
+                              <input type="radio" name="star" class="star-2" value="2" id="star-2{{ noticia.id_noticia }}"/>
+                              <label class="star-2" for="star-2{{ noticia.id_noticia }}">2</label>
+                              <input type="radio" name="star" class="star-3" value="3" id="star-3{{ noticia.id_noticia }}"/>
+                              <label class="star-3" for="star-3{{ noticia.id_noticia }}">3</label>
+                              <input type="radio" name="star" class="star-4" value="4" id="star-4{{ noticia.id_noticia }}"/>
+                              <label class="star-4" for="star-4{{ noticia.id_noticia }}">4</label>
+                              <input type="radio" name="star" class="star-5" value="5" id="star-5{{ noticia.id_noticia }}"/>
+                              <label class="star-5" for="star-5{{ noticia.id_noticia }}">5</label>
+                              <span></span>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
                 </div>
             {% endfor %}
         </div>
     </div>
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        // CSRF code
+        function getCookie(name) {
+            var cookieValue = null;
+            var i = 0;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (i; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+        // POST PARA COMPROBAR PUNTUACIONES
+        var formsCollection = document.getElementsByName("rating");
+        for(var i=0;i<formsCollection.length;i++) {
+            var id_noticia = formsCollection[i].id
+            var radios = formsCollection[i].elements
+            data = {id_noticia: id_noticia, id_usuario: {{ user.id }}};
+
+            $.ajax({
+                type:"POST",
+                url:"/check_rate/",
+                dataType: "json",
+                data : data,
+                success: function(json){
+                    if (json[0]['check'] == true) {
+                            console.log(json[0]['value'])
+                            for(var i=0;i<radios.length;i++) {
+                                if (radios[i].value == json[0]['value']){
+                                    console.log('#'+json[0]['id_noticia']);
+                                    $('input[value='+json[0]['value']+']', '#'+json[0]['id_noticia'])[0].checked = true;
+
+                                }
+                            }
+
+                    }else{
+                        console.log('Sin puntuar')
+                    }
+                }
+            });
+        }
+
+
+        // POST PARA PUNTUAR
+        $('input[type=radio][name=star]').change(function () {
+            console.log("form submitted!")
+            var noti = $(this).parent("div").parent("form").attr('id');
+            var data = {
+                    'value' : $(this).val(),
+                    'id_noticia' : noti,
+                    'id_usuario' : {{ user.id }}
+              };
+            $.ajax({
+                type:"POST",
+                url:"/rate/",
+                dataType: "json",
+                data : data,
+                success: function(json)
+                {
+                    console.log(json[0]['value']);
+                }
+            });
+        });
+
+    });
+
+
+
+</script>
 
 {% endblock %}
 
