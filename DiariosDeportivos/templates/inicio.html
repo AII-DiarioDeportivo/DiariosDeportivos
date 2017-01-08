@@ -4,22 +4,23 @@
 
 {% block content %}
 
-    {% if noticias_recomendadas != None %}
+    {% if user.is_authenticated %}
+        {% if noticias_recomendadas != None %}
 
-        <div>
-            {% for noticias_recomendada in noticias_recomendadas %}
+            <div>
+                {% for noticias_recomendada in noticias_recomendadas %}
 
-                <div >
-                  <p class="card-text">{{ noticias_recomendada.titulo }}</p>
-                  <p class="card-text">{{ noticias_recomendada.url_noticia }}</p>
-                  <p class="card-text">{{ noticias_recomendada.url_foto }}</p>
-                </div>
+                    <div >
+                      <p class="card-text">{{ noticias_recomendada.titulo }}</p>
+                      <p class="card-text">{{ noticias_recomendada.url_noticia }}</p>
+                      <p class="card-text">{{ noticias_recomendada.url_foto }}</p>
+                    </div>
 
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
 
+        {% endif %}
     {% endif %}
-
 
     {% if user.is_authenticated %}
         <h2>Bienvenido {{ user.username }}</h2>

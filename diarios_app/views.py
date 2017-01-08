@@ -34,8 +34,10 @@ def inicio(request):
         for i in range(0, tags.__len__()):
             tag = Etiquetas.objects.get(id_etiqueta=tags[i][1])
             noticias_recomendadas.append(tag.noticias.all().order_by('fecha')[0])
-
-    nr2 = list(set(noticias_recomendadas))
+    if not noticias_recomendadas:
+        nr2 = []
+    else:
+        nr2 = list(set(noticias_recomendadas))
     return render_to_response('inicio.html',{'noticias': noticias, 'etiquetas':etiquetas, 'noticias_recomendadas':nr2},context_instance=RequestContext(request))
 
 @login_required
