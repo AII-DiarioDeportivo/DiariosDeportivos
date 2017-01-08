@@ -7,16 +7,28 @@
     {% if user.is_authenticated %}
         {% if noticias_recomendadas != None %}
 
-            <div>
-                {% for noticias_recomendada in noticias_recomendadas %}
-
-                    <div >
-                      <p class="card-text">{{ noticias_recomendada.titulo }}</p>
-                      <p class="card-text">{{ noticias_recomendada.url_noticia }}</p>
-                      <p class="card-text">{{ noticias_recomendada.url_foto }}</p>
+            <div class= "container_special">
+                <div id="carousel-generic" class="carousel slide" data-ride="carousel" data-interval="0" data-slide-to="{{forloop.counter0}}">
+                    <div class="carousel-inner" role="listbox">
+                        {% for item in noticias_recomendadas %}
+                            <div class="item {% if forloop.first %} active {%     endif %}">
+                                <div align="center">
+                                    <a href="{{ item.url_noticia }}"><img class="card-img img-thumbnail" src="{{ item.url_foto }}"/></a>
+                                </div>
+                                <div class="carousel-caption capt">
+                                    <h1>{{item.titulo}}</h1>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-
-                {% endfor %}
+                    <!-- There are the Left and Right Controls to change the pictures -->
+                    <a class="left carousel-control" href="#carousel-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
             </div>
 
         {% endif %}
