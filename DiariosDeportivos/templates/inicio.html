@@ -7,7 +7,7 @@
     {% if user.is_authenticated %}
         <h3>Bienvenido <strong>{{ user.username }}</strong>!</h3>
         <br>
-        {% if noticias_recomendadas != None %}
+        {% if noticias_recomendadas|length > 0 %}
             <h4 class="text-center">Noticias recomendadas</h4>
             <br>
             <div class= "container_special">
