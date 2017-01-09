@@ -193,12 +193,13 @@ def busca_noticias(request):
 
     noticia = request.GET.get('q', None)
     ix = open_dir(dirindexnoticias)
+    nr2 = []
 
     with ix.searcher() as searcher:
         query = qparser.MultifieldParser(['titulo', 'descripcion', 'fecha'], ix.schema)
         q = query.parse(unicode(noticia))
         noticias = searcher.search(q)
-        return render_to_response('inicio.html', {'noticias': noticias,}, context_instance=RequestContext(request))
+        return render_to_response('inicio.html', {'noticias': noticias,'noticias_recomendadas':nr2,}, context_instance=RequestContext(request))
 
 def etiquetas_noticias(request):
 
