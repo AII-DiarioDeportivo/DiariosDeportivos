@@ -734,23 +734,19 @@ def read_futbol():
     read_primera_division_AS()
     read_primera_division_MARCA()
     read_primera_division_EL_MUNDO()
-    indexar_datos()
 
 def read_basket():
     read_liga_endesa_AS()
     read_liga_endesa_EL_MUNDO()
     read_liga_endesa_MARCA()
-    indexar_datos()
 
 def read_formula1():
     read_formula_1_MARCA()
     read_formula_1_AS()
-    indexar_datos()
 
 def read_moto():
     read_motociclismo_MARCA()
     read_motociclismo_AS()
-    indexar_datos()
 
 if __name__ == "__main__":
     read_primera_division_MARCA()
