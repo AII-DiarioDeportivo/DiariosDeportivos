@@ -46,6 +46,8 @@ def populate(request):
     read_formula1()
     read_moto()
     indexar_datos()
+    return render_to_response('populate.html',context_instance=RequestContext(request))
+
 
 @login_required
 def futbol(request):
